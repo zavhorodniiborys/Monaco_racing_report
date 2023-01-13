@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block table_body %}
+  {% for driver in report %}
+    <tr>
+      <td>
+        {{loop.index}}
+      </td>
+        {% include 'table_report_drivers.html' %}
+      </tr>
+  {% endfor %}
+{% endblock %}
