@@ -31,9 +31,6 @@ class ReportBasic:
             response.headers['Content-Type'] = 'application/xml'
             return response
 
-        else:
-            abort(500)
-
 
 class ReportApi(Resource, ReportBasic):
     def get(self):

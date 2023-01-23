@@ -20,6 +20,9 @@ class TestAPI(unittest.TestCase):
     expected_json = b'{"CLS": {"name": "Charles Leclerc", "org": "SAUBER FERRARI", "lap_time": "1:12.829"}, ' \
                     b'"BHS": {"name": "Brendon Hartley", "org": "SCUDERIA TORO ROSSO HONDA", "lap_time": "1:13.179"}}'
 
+    expected_json_desc = b'{"BHS": {"name": "Brendon Hartley", "org": "SCUDERIA TORO ROSSO HONDA", "lap_time": "1:13.179"}, ' \
+                    b'"CLS": {"name": "Charles Leclerc", "org": "SAUBER FERRARI", "lap_time": "1:12.829"}}'
+
     expected_xml = b"""<results>
   <CLS>
     <lap_time>1:12.829</lap_time>
@@ -31,6 +34,19 @@ class TestAPI(unittest.TestCase):
     <name>Brendon Hartley</name>
     <org>SCUDERIA TORO ROSSO HONDA</org>
   </BHS>
+</results>"""
+
+    expected_xml_desc = b"""<results>
+  <BHS>
+    <lap_time>1:13.179</lap_time>
+    <name>Brendon Hartley</name>
+    <org>SCUDERIA TORO ROSSO HONDA</org>
+  </BHS>
+  <CLS>
+    <lap_time>1:12.829</lap_time>
+    <name>Charles Leclerc</name>
+    <org>SAUBER FERRARI</org>
+  </CLS>
 </results>"""
 
     expected_driver_json = b'{"name": "Charles Leclerc", "org": "SAUBER FERRARI", "lap_time": "1:12.829"}'
@@ -66,6 +82,18 @@ class TestAPI(unittest.TestCase):
 
                 self.assertEqual(exp_res, return_value.data)
 
+    def test_api_v1_order(self):
+        for api_format, order, exp_res in (('json', 'asc', self.expected_json),
+                                           ('json', 'desc', self.expected_json_desc),
+                                           ('xml', 'asc', self.expected_xml),
+                                           ('xml', 'desc', self.expected_xml_desc)):
+            with self.subTest():
+                return_value = self.client\
+                    .get(f'http://127.0.0.1:5000/api/v1/report/?format={api_format}&order={order}')
+
+                self.assertEqual(return_value.status_code, 200)
+                self.assertEqual(return_value.data, exp_res)
+
     def test_api_v1_error(self):
         return_value = self.client.get('http://127.0.0.1:5000/api/v1/report/?format=wrong_format')
         self.assertEqual(return_value.status_code, 400)
@@ -93,7 +121,3 @@ class TestAPI(unittest.TestCase):
     def tearDownClass(cls):
         racing_data.db.drop_tables(cls.models)
         racing_data.db.close()
-
-
-if __name__ == '__main__':
-    unittest.main()
