@@ -1,5 +1,5 @@
 from my_custom_report import Report
-from Flask_app.models import db, Driver, RacingReport
+from Flask_app.db_models import db, Driver, RacingReport
 
 report_inst = Report()
 REPORT_PATH = '../data/racing_data'

@@ -3,7 +3,7 @@ from flask import Flask
 
 app = Flask(__name__)
 
-from Flask_app.views.api_endpoints import api_endpoints
+from Flask_app.controllers.controller_api_endpoints import api_endpoints
 
 app.register_blueprint(api_endpoints)
 

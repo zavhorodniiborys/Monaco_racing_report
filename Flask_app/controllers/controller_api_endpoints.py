@@ -1,13 +1,13 @@
 import json
 from collections import OrderedDict
 from dict2xml import dict2xml
-from flask import abort, Blueprint, make_response
+from flask import Blueprint, make_response
 from flask_restful import Resource, Api, reqparse
 
-from Flask_app.racing_data import ReportDB
+from Flask_app.model_racing_data import ReportDB
 
 
-api_endpoints = Blueprint('api_endpoints', __name__)
+api_endpoints = Blueprint('api_endpoints', __name__, url_prefix='/api/v1')
 api = Api(api_endpoints)
 
 parser = reqparse.RequestParser()
@@ -143,5 +143,5 @@ class DriverReportAPI(Resource, ReportBasic):
         return response
 
 
-api.add_resource(ReportApi, '/api/v1/report/')
-api.add_resource(DriverReportAPI, '/api/v1/report/driver/')
+api.add_resource(ReportApi, '/report/')
+api.add_resource(DriverReportAPI, '/report/driver/')

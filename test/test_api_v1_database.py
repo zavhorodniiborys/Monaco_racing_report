@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch
 from Flask_app.app import app
-import Flask_app.racing_data as racing_data
+import Flask_app.model_racing_data as racing_data
 
 
 class TestAPI(unittest.TestCase):
@@ -59,7 +59,7 @@ class TestAPI(unittest.TestCase):
     models = [racing_data.Driver, racing_data.RacingReport]
 
     @classmethod
-    @patch('Flask_app.racing_data.Report.build_report', return_value=test_example)
+    @patch('Flask_app.model_racing_data.Report.build_report', return_value=test_example)
     @patch.object(racing_data.db, 'database', ':memory:')
     def setUpClass(cls, report_patcher):
         racing_data.db.connect()
