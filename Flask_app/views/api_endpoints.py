@@ -4,10 +4,8 @@ from dict2xml import dict2xml
 from flask import abort, Blueprint, make_response
 from flask_restful import Resource, Api, reqparse
 
-from my_custom_report import Report
+from Flask_app.racing_data import ReportDB
 
-report_inst = Report()
-REPORT_PATH = '../data/racing_data'
 
 api_endpoints = Blueprint('api_endpoints', __name__)
 api = Api(api_endpoints)
@@ -84,7 +82,7 @@ class ReportApi(Resource, ReportBasic):
         order = args['order']
         api_format = args['format']
 
-        report = report_inst.build_report(REPORT_PATH, order)
+        report = ReportDB.get_report(order)
 
         response = self.create_response(api_format, report)
         return response
@@ -137,7 +135,7 @@ class DriverReportAPI(Resource, ReportBasic):
         driver_id = args['driver_id']
         api_format = args['format']
 
-        report = report_inst.build_report(REPORT_PATH)
+        report = ReportDB.get_report()
 
         if driver_id in report.keys():
             driver_result = report[driver_id]
