@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{% block table_body %}
+  {% for driver in report %}
+    {% include 'table_list_of_drivers.html' %}
+  {% endfor %}
+{% endblock %}
